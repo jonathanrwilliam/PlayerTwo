@@ -1,0 +1,35 @@
+.bg-cinza {
+  background-color: rgb(219, 219, 219);
+}
+
+.bg-azul {
+  background-color: rgb(46, 88, 113);
+}
+
+/*Tamanho padrao imagens carousel*/
+.fotoPerfil {
+  width: 500px;
+  height: 500px;
+  background-image: url("https://monteluke.com.au/wp-content/gallery/linkedin-profile-pictures/9.JPG");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/*Tamanho padrao imagens carousel tela pequena*/
+@media(max-width:767px) {
+  .fotoPerfil {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+/* Esta regra define a classe "d-flex" como "display: block" em telas menores */
+@media screen and (max-width: 767px) {
+  .conteudo-perfil {
+    display: block !important;
+  }
+}
+
+
+
+

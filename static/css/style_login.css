@@ -1,0 +1,19 @@
+html,body {
+    height: 100%;
+}
+
+.form-container{
+    max-width: 400px;
+    padding: 1rem;
+}
+
+/*
+.bg-body-tertiary{
+    background-color: rgb(52, 52, 64) !important;
+}
+
+.btn-primary{
+    background-color:rgb(12, 149, 194) ;
+    border: none;
+}
+*/
