@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navbar</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-expand py-1 bg-dark border-bottom">
           <div class="container-fluid">
-            <a class="navbar-brand" href="home.html">
+            <a class="navbar-brand" href="home.php">
               <img src="static/images/logo_light.png" alt="logo" width="40" height="40" class="d-inline-block align-text-top">
             </a>
           </div>
@@ -31,7 +28,7 @@
             </li>
             <!--Demais ícones-->
             <li class="nav-item me-3 me-lg-0">
-              <a class="nav-link text-white" href="noticias.html"><i class="bi bi-calendar-event-fill fs-4 mx-1"></i></a>
+              <a class="nav-link text-white" href="noticias.php"><i class="bi bi-calendar-event-fill fs-4 mx-1"></i></a>
             </li>
             <li class="nav-item me-3 me-lg-0">
               <a class="nav-link text-white" href="#"><i class="bi bi-bell-fill fs-4 mx-1"></i></a>
@@ -39,11 +36,12 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="static/images/profile_avatar.png" alt="profile" width="40" height="40">
+                <?= $_SESSION['username'] ?>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="perfil.html">Meu perfil</a></li>
+                <li><a class="dropdown-item" href="perfil.php">Meu perfil</a></li>
                 <li class="dropdown-divider"></li>
-                <li><a id="logout" class="dropdown-item" href="login.html">Sair</a></li>
+                <li><a id="logout" class="dropdown-item" href="logout.php">Sair</a></li>
               </ul>
             </li>
           </ul>
@@ -51,9 +49,6 @@
         </nav>
       </header>
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-    crossorigin="anonymous"></script>
 </body>
 
 </html>

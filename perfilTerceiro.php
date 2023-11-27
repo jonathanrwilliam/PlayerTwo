@@ -7,41 +7,14 @@
     <title>Perfil</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="static/css/style_perfil.css">
+    <link rel="stylesheet" href="static/css/style_perfilTerceiro.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 
 <body>
 
     <header>
-        <nav class="navbar navbar-expand py-1 bg-dark border-bottom">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="home.html">
-                    <img src="static/images/logo_light.png" alt="logo" width="40" height="40"
-                        class="d-inline-block align-text-top">
-                </a>
-            </div>
-            <ul class="navbar-nav d-flex flex-row d-flex align-items-center">
-                <li class="nav-item me-3 me-lg-0">
-                    <a class="nav-link text-white" href="noticias.html"><i
-                            class="bi bi-calendar-event fs-4 mx-1"></i></a>
-                </li>
-                <li class="nav-item me-3 me-lg-0">
-                    <a class="nav-link text-white" href="#"><i class="bi bi-bell-fill fs-4 mx-1"></i></a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="static/images/profile_avatar.png" alt="profile" width="40" height="40">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="perfil.html">Meu perfil</a></li>
-                        <li class="dropdown-divider"></li>
-                        <li><a id="logout" class="dropdown-item" href="login.html">Sair</a></li>
-                    </ul>
-                </li>
-            </ul>
-            </div>
-        </nav>
+        <?php  include 'navbar.php'; ?>
     </header>
 
     <main class="container bg-azul p-3">
@@ -51,12 +24,12 @@
                 <!-- Linha 1: Nome, Idade, Distrito -->
                 <div class="row mb-3 mx-3">
                     <div class="col me-3">
-                        <label for="nome" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="nome" value="Ana">
+                        <label for="nome" class="form-label" >Nome</label>
+                        <input type="text" class="form-control" id="nome" value="Ana" readonly>
                     </div>
                     <div class="col">
                         <label for="distrito" class="form-label">Distrito</label>
-                        <input type="text" class="form-control" id="distrito" value="Lisboa">
+                        <input type="text" class="form-control" id="distrito" value="Lisboa" readonly>
                     </div>
                 </div>
 
@@ -64,11 +37,11 @@
                 <div class="row mb-3 mx-3">
                     <div class="col me-3">
                         <label for="genero" class="form-label">Género</label>
-                        <input type="text" class="form-control" id="genero" value="Mulher">
+                        <input type="text" class="form-control" id="genero" value="Mulher" readonly>
                     </div>
                     <div class="col">
                         <label for="orientacao" class="form-label">Orientação</label>
-                        <input type="text" class="form-control" id="orientacao" value="Hétero">
+                        <input type="text" class="form-control" id="orientacao" value="Hétero" readonly>
                     </div>
                 </div>
 
@@ -76,11 +49,11 @@
                 <div class="row mb-3 mx-3">
                     <div class="col me-3">
                         <label for="genero" class="form-label">Discord</label>
-                        <input type="text" class="form-control" id="discord" value="https://discord.com/servers">
+                        <input type="text" class="form-control" id="discord" value="https://discord.com/servers" readonly>
                     </div>
                     <div class="col">
                         <label for="orientacao" class="form-label">Intagram</label>
-                        <input type="text" class="form-control" id="instagram" value="https://www.instagram.com/">
+                        <input type="text" class="form-control" id="instagram" value="https://www.instagram.com/" readonly>
                     </div>
                 </div>
                 
@@ -89,7 +62,7 @@
                     <div class="col">
                         <label for="descricao" class="form-label">Descrição</label>
                         <textarea class="form-control" id="descricao"
-                            rows="4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam dolorum nam nihil quia. Placeat blanditiis, consequuntur veniam nihil dolorum fugiat molestias aliquam dicta sed alias iusto explicabo quasi? Nisi, magni.</textarea>
+                            rows="4" readonly>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam dolorum nam nihil quia. Placeat blanditiis, consequuntur veniam nihil dolorum fugiat molestias aliquam dicta sed alias iusto explicabo quasi? Nisi, magni.</textarea>
                     </div>
                 </div>
                 
@@ -106,16 +79,9 @@
 
                 <!-- Linha 6: Botões -->
                 <div class="row mx-3">
-                    <label for="jogos" class="form-label">Foto de perfil</label>
-                    <br>
                     <div class="col text-end">
-                        <!-- Input foto de perfil -->
-                        <div class="input-group mb-3">
-                            <label class="input-group-text" for="inputGroupFile01">Upload</label>
-                            <input type="file" class="form-control" id="inputGroupFile01">
-                        </div>
-                        <button type="button" class="btn btn-primary me-2">Salvar</button>
-                        <button type="button" class="btn btn-secondary">Cancelar</button>
+                        <button type="button" class="btn btn-success me-2">Convidar para jogar</button>
+                        <button type="button" class="btn btn-secondary">Sair</button>
                     </div>
                 </div>
             </div>
@@ -125,7 +91,7 @@
     </main>
 
 
-    <script src="static/js/perfil.js"></script>
+    <script src="static/js/perfilTerceiro.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
