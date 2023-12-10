@@ -10,9 +10,9 @@
 .fotoPerfil {
   width: 500px;
   height: 500px;
-  background-image: url("https://monteluke.com.au/wp-content/gallery/linkedin-profile-pictures/9.JPG");
   background-size: cover;
   background-repeat: no-repeat;
+  background-position-x: center;
 }
 
 /*Tamanho padrao imagens carousel tela pequena*/
@@ -29,7 +29,6 @@
     display: block !important;
   }
 }
-
 
 
 

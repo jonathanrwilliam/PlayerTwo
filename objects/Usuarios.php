@@ -31,12 +31,91 @@ class Usuarios
     // Ler dados perfil
     function readOne()
     {
+        // Query SQL para ler apenas um registo
+        $query = "SELECT * FROM " . $this->table_name . " 
+        WHERE ID = :ID
+            LIMIT 0,1";
+
+        // Preparar query
+        $stmt = $this->conn->prepare($query);
+
+        // Filtrar e associar valor do ID
+        $this->id = filter_var($this->id, FILTER_SANITIZE_NUMBER_INT);
+        $stmt->bindValue(':ID', $this->id);
+
+        //Executar query
+        $stmt->execute();
+
+        // Obter dados do registo e instanciar o objeto
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->name = $row['NOME'];
+        $this->dateofbirth = $row['DATA_NASCIMENTO'];
+        $this->email = $row['EMAIL'];
+        $this->password = $row['SENHA'];
+        //Calcular idade / Verificar se está correto
+        $currentDate = new DateTime();
+        $this->age = $currentDate->diff(new DateTime($this->dateofbirth))->y;
+
+        $this->description = $row['DESCRICAO'];
+        $this->sexuality = $row['SEXO_GENERO'];
+        $this->orientation = $row['ORIENTACAO_ORIENTACAO'];
+        $this->district = $row['DISTRITO_DISTRITOS'];
+        $this->profilepicture = $row['FOTO_PERFIL'];
+        $this->discord = $row['LINK_DISCORD'];
+        $this->instagram = $row['LINK_INSTAGRAM'];
     }
 
-    // Ler dados dos cards
-    function read()
+    // Atualizar dados perfil
+    function update()
     {
+
+        // update query
+        $query = "UPDATE
+                " . $this->table_name . "
+            SET
+                NOME = :name,
+                DISTRITO_DISTRITOS = :district,
+                SEXO_GENERO = :sexuality,
+                ORIENTACAO_ORIENTACAO = :orientation,
+                LINK_DISCORD = :discord,
+                LINK_INSTAGRAM = :instagram,
+                DESCRICAO = :description
+            WHERE
+                ID = :id";
+
+        // Preparar query
+        $stmt = $this ->conn->prepare($query);
+
+        // Filtrar valores
+        $this->name = filter_var($this->name,FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->district = filter_var($this->district,FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->sexuality = filter_var($this->sexuality,FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->orientation = filter_var($this->orientation,FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->discord = filter_var($this->discord,FILTER_SANITIZE_URL);
+        $this->instagram = filter_var($this->instagram,FILTER_SANITIZE_URL);
+        $this->description = filter_var($this->description,FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->id = filter_var($this->id,FILTER_SANITIZE_NUMBER_INT);
+
+        // Associar valores
+        $stmt->bindValue(":name",$this->name);
+        $stmt->bindValue(":district",$this->district);
+        $stmt->bindValue(":sexuality",$this->sexuality);
+        $stmt->bindValue(":orientation",$this->orientation);
+        $stmt->bindValue(":discord",$this->discord);
+        $stmt->bindValue(":instagram",$this->instagram);
+        $stmt->bindValue(":description",$this->description);
+        $stmt->bindValue(":id",$this->id);
+
+        // Executar query
+        if ($stmt->execute()) {
+            return true;
+        }else{
+            return false;
+        }
+        
     }
+
 
     // Inserir novo usuário na BD
     function create()
@@ -96,18 +175,18 @@ class Usuarios
         return $html;
     }
 
-    // Fazer login
+    // Fazer login Web
     function login()
     {
 
         $html = '';
-        
+
         $email = filter_input(INPUT_POST, 'loginEmail', FILTER_SANITIZE_EMAIL);
         $password =  filter_input(INPUT_POST, 'loginPassword');
         $password_hash_db = password_hash($password, PASSWORD_DEFAULT);
         debug("FORMULÁRIO:<br>email: $email <br> pwd: $password <br> hash: $password_hash_db<br>");
 
-         //entra aqui
+        //entra aqui
         $errors = false;
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $html .= '<div class="alert alert-danger">O email não é válido!</div>';
@@ -148,13 +227,7 @@ class Usuarios
     }
 
 
-
-    // Atualizar dados perfil
-    function update()
-    {
-    }
-
-    // Remover um usuário
+    // Apagar perfil
     function delete()
     {
     }

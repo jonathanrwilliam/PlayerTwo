@@ -52,3 +52,13 @@ if (defined('DEBUG') && DEBUG) {
     error_reporting(E_ALL);
     $_DEBUG = '';
 }
+
+//Configuracoes ficheiros upload
+
+define('WEB_SERVER','https://esan-tesp-ds-paw.web.ua.pt');
+define('WEB_ROOT','/tesp-ds-g8/');
+
+define('SERVER_FILE_ROOT','//ARCA.STORAGE.UA.PT/HOSTING/esan-tesp-ds-paw.web.ua.pt'.WEB_ROOT);
+define('UPLOAD_FOLDER','uploads/fotos/');
+
+define('UPLOAD_PATH',SERVER_FILE_ROOT . UPLOAD_FOLDER);

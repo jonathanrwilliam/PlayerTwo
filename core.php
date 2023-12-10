@@ -42,3 +42,12 @@ function debug($info = '') {
     }
     return false;
 }
+
+//Verificar se é admin
+function is_admin(){
+    if (isset($_SESSION['admin']) && $_SESSION['admin']==true){
+        return true;
+    }else{
+        return false;
+    }
+}
