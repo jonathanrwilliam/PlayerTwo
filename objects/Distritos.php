@@ -1,14 +1,14 @@
 <?php
 
-class Orientacao
+class Distritos
 {
 
     // Ligação à Base de Dados e nome da tabela
     private $conn;
-    private $table_name = "ORIENTACAO";
+    private $table_name = "DISTRITOS";
     // Propriedades
     public $id;
-    public $orientation;
+    public $district;
 
     // Método construtor que instancia a ligação à Base de Dados
 
@@ -29,15 +29,15 @@ class Orientacao
         //Executar query
         $stmt->execute();
 
-        if ($user->orientation === null) {
+        if ($user->district === null) {
             echo '<option value="" selected></option>';
         }
 
         while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
-            if ($row->ORIENTACAO == $user->orientation) {
-                echo '<option value="' . $row->ORIENTACAO . '" selected>' . $row->ORIENTACAO . '</option>';
+            if ($row->DISTRITO == $user->district) {
+                echo '<option value="' . $row->DISTRITO . '" selected>' . $row->DISTRITO . '</option>';
             } else {
-                echo '<option value="' . $row->ORIENTACAO . '" >' . $row->ORIENTACAO . '</option>';
+                echo '<option value="' . $row->DISTRITO . '" >' . $row->DISTRITO . '</option>';
             }
         }
     }

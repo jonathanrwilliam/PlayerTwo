@@ -10,25 +10,26 @@ if (!isset($_SESSION['uid'])) {
 require_once 'config.php';
 require_once 'core.php';
 
-
-
-// Direcionar de acordo com admin
-if (is_admin()) {
-    $module = 'noticiasAdmin';
-} else {
-
-    $module = filter_input(INPUT_GET, 'm', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    // Testar se existe ficheiro a carregar. caso contrário carregar HOME
-    if (!file_exists("mod/$module.php")) {
-        $module = 'home';
-    }
-}
-
+$module = filter_input(INPUT_GET, 'm', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 // Carregar ação
 $action = filter_input(INPUT_GET, 'a', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 
+
+// Direcionar de acordo com admin
+if (is_admin()) {
+    $module = 'noticias';
+    $action = 'noticiasAdmin';
+} else {
+
+    
+    // Testar se existe ficheiro a carregar. caso contrário carregar HOME
+    if (!file_exists("mod/$module/$action.php")) {
+        $module = 'home';
+        $action = 'home';
+    }
+}
 
 ?>
 
@@ -50,12 +51,14 @@ $action = filter_input(INPUT_GET, 'a', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     include_once 'mod/navbar.php';
 
 
-    require_once "mod/$module.php";
+    require_once "mod/$module/$action.php";
 
 
     ?>
 
-
+    <div>
+        <?= debug() ? $_DEBUG : '' ?>
+    </div>
     <script src="static/js/<?= $module ?>.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>

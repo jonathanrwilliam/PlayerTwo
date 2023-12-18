@@ -10,7 +10,7 @@ $user->readOne();
 <header>
   <nav class="navbar navbar-expand py-1 bg-dark border-bottom">
     <div class="container-fluid">
-      <a class="navbar-brand" href="?m=home">
+      <a class="navbar-brand" href="?m=home&a=home">
         <img src="static/images/logo_light.png" alt="logo" width="40" height="40" class="d-inline-block align-text-top">
       </a>
     </div>
@@ -25,7 +25,7 @@ $user->readOne();
       </li>
       <!--Demais ícones-->
       <li class="nav-item me-3 me-lg-0">
-        <a class="nav-link text-white" href="?m=noticias"><i class="bi bi-calendar-event-fill fs-4 mx-1"></i></a>
+        <a class="nav-link text-white" href="?m=noticias&a=noticias"><i class="bi bi-calendar-event-fill fs-4 mx-1"></i></a>
       </li>
       <li class="nav-item me-3 me-lg-0">
         <a class="nav-link text-white" href="#"><i class="bi bi-bell-fill fs-4 mx-1"></i></a>
@@ -36,14 +36,14 @@ $user->readOne();
           if ($user->profilepicture == null) {
             $url = 'https://esan-tesp-ds-paw.web.ua.pt/tesp-ds-g8/Projeto/static/images/profile_avatar.jpg';
           } else {
-            $url = $user->profilepicture;
+            $url = WEB_SERVER . WEB_ROOT . UPLOAD_FOLDER . UPLOAD_FOTOS . $user->profilepicture;
           }
           ?>
           <img src="<?php echo $url; ?>" alt="profile" width="40" height="40" style="border-radius: 50%; object-fit:cover">
           <?= $_SESSION['username'] ?>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="?m=perfil">Meu perfil</a></li>
+          <li><a class="dropdown-item" href="?m=perfil&a=verPerfil">Meu perfil</a></li>
           <li class="dropdown-divider"></li>
           <li><a id="logout" class="dropdown-item" href="logout.php">Sair</a></li>
         </ul>

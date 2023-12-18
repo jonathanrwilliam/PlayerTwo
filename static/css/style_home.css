@@ -13,7 +13,9 @@
 
 .cards-perfil-foto{
   border-radius: 50%;
-  max-width: 150px;
+  width: 150px ; 
+  height: 150px ;
+  object-fit: cover;
 }
 
 .cards-jogos{
@@ -23,14 +25,10 @@
   min-height: 160px;
 }
 
-.cards-convites-foto{
-  border-radius: 50%;
-  max-width: 80px;
-  max-height: 80px;
-}
-
+.cards-convites-foto, 
 .cards-conversas-foto{
   border-radius: 50%;
   max-width: 80px;
   max-height: 80px;
 }
+

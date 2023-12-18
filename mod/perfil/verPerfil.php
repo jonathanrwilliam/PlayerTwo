@@ -1,9 +1,15 @@
 <?php
 require_once './objects/Usuarios.php';
 require_once './objects/Orientacao.php';
-$user = new Usuarios(connectDB($db));
+require_once './objects/Distritos.php';
+require_once './objects/Genero.php';
+
+$pdo = connectDB($db);
+$user = new Usuarios($pdo);
 $user->id = $_SESSION['uid'];
-$lista = new Orientacao(connectDB($db));
+$listaOrientacao = new Orientacao($pdo);
+$listaDistritos = new Distritos($pdo);
+$listaGenero = new Genero($pdo);
 
 require_once './config.php';
 require_once './core.php';
@@ -18,16 +24,20 @@ $update = filter_input(INPUT_POST, 'username');
 
 if ($update) {
     // obter valores do form e colocar no $user
-    $user->name = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $user->district = filter_input(INPUT_POST, 'district', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $user->sexuality = filter_input(INPUT_POST, 'sexuality', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $user->name = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
+    $user->district = filter_input(INPUT_POST, 'district');
+    $user->sexuality = filter_input(INPUT_POST, 'sexuality');
     $user->orientation = filter_input(INPUT_POST, 'orientation');
     $user->discord = filter_input(INPUT_POST, 'discord', FILTER_SANITIZE_URL);
     $user->instagram = filter_input(INPUT_POST, 'instagram', FILTER_SANITIZE_URL);
-    $user->description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $user->description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_SPECIAL_CHARS);
     $user->update();
 }
-
+// Atualizar foto
+$updateFoto = filter_input(INPUT_POST, 'updateFoto');
+if ($updateFoto) {
+    require_once './mod/perfil/updateFoto.php';
+}
 ?>
 
 <main class="container bg-azul p-3">
@@ -36,7 +46,7 @@ if ($update) {
         if ($user->profilepicture == null) {
             $url = WEB_SERVER . WEB_ROOT . 'Projeto/static/images/profile_avatar.jpg';
         } else {
-            $url = $user->profilepicture;
+            $url = WEB_SERVER . WEB_ROOT . UPLOAD_FOLDER . UPLOAD_FOTOS . $user->profilepicture;
         }
         ?>
         <!-- Form Update foto de perfil -->
@@ -54,7 +64,7 @@ if ($update) {
         <div class="col">
             <form method="post">
                 <div class="container px-0">
-                    <!-- Linha 1: Nome, Idade, Distrito -->
+                    <!-- Linha 1: Nome, Distrito -->
                     <div class="row mb-3 mx-3">
                         <div class="col me-3">
                             <label for="nome" class="form-label">Nome</label>
@@ -62,7 +72,9 @@ if ($update) {
                         </div>
                         <div class="col">
                             <label for="distrito" class="form-label">Distrito</label>
-                            <input type="text" class="form-control" name="district" value="<?= $user->district ?>">
+                            <select name="district" id="district" class="form-select">
+                                <?php $listaDistritos->read($user); ?>
+                            </select>
                         </div>
                     </div>
 
@@ -70,20 +82,15 @@ if ($update) {
                     <div class="row mb-3 mx-3">
                         <div class="col me-3">
                             <label for="genero" class="form-label">Género</label>
-                            <input type="text" class="form-control" name="sexuality" value="<?= $user->sexuality ?>">
+                            <select name="sexuality" id="sexuality" class="form-select">
+                                <?php $listaGenero->read($user); ?>
+                            </select>
                         </div>
                         <div class="col">
-
                             <label for="orientacao" class="form-label">Orientação</label>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <?= $user->orientation ?>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <?php $lista->read($user); ?>
-                                </ul>
-                            </div>
-
+                            <select name="orientation" id="orientation" class="form-select">
+                                <?php $listaOrientacao->read($user); ?>
+                            </select>
                         </div>
                     </div>
 
@@ -131,7 +138,6 @@ if ($update) {
     </div>
     <div>
         <?= $html ?>
-        <?= debug() ? $_DEBUG : '' ?>
     </div>
 
 </main>

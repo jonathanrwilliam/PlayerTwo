@@ -1,14 +1,14 @@
 <?php
 
-class Orientacao
+class Genero
 {
 
     // Ligação à Base de Dados e nome da tabela
     private $conn;
-    private $table_name = "ORIENTACAO";
+    private $table_name = "GENERO";
     // Propriedades
     public $id;
-    public $orientation;
+    public $district;
 
     // Método construtor que instancia a ligação à Base de Dados
 
@@ -29,15 +29,17 @@ class Orientacao
         //Executar query
         $stmt->execute();
 
-        if ($user->orientation === null) {
+        $hasEnteredElseIf = false;
+
+        if ($user->sexuality === null) {
             echo '<option value="" selected></option>';
         }
 
         while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
-            if ($row->ORIENTACAO == $user->orientation) {
-                echo '<option value="' . $row->ORIENTACAO . '" selected>' . $row->ORIENTACAO . '</option>';
+            if ($row->SEXO == $user->sexuality) {
+                echo '<option value="' . $row->SEXO . '" selected>' . $row->SEXO . '</option>';
             } else {
-                echo '<option value="' . $row->ORIENTACAO . '" >' . $row->ORIENTACAO . '</option>';
+                echo '<option value="' . $row->SEXO . '" >' . $row->SEXO . '</option>';
             }
         }
     }

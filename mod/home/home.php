@@ -1,3 +1,22 @@
+<?php
+require_once './objects/Usuarios.php';
+require_once './objects/Convites.php';
+
+$pdo = connectDB($db);
+
+$listarUsuarios = new Usuarios($pdo);
+
+$user->id = $_SESSION['uid'];
+
+$convitesRecebidos = new Convites($pdo);
+$convitesRecebidos->id = $_SESSION['uid'];
+
+require_once './config.php';
+require_once './core.php';
+
+
+?>
+
 
 <main class=" container-fluid	">
   <div class="row vh-100">
@@ -17,7 +36,8 @@
           </button>
         </div>
       </div>
-      <!--Cards convites-->
+      <?php $convitesRecebidos->readRecebidos();?>
+      <!--Cards convites
       <div class="card bg-dark border-light my-2">
         <div class="card-body d-flex">
           <div class="col-4 text-center me-2">
@@ -31,36 +51,13 @@
                 &nbsp;&nbsp;<span class="badge bg-azul">Idade: 21</span></h5>
             </div>
             <div class="d-flex justify-content-center text-center">
-              <button type="button" class="btn btn-success flex-fill me-1 btn-sm" id="aceitar" data-bs-toggle="modal" data-bs-target="#modalAceitar">Aceitar</button>
+              <button type="button" class="btn btn-success flex-fill me-1 btn-sm" id="aceitar">Aceitar</button>
               <button type="button" class="btn btn-danger flex-fill btn-sm" id="recusar">Recusar</button>
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
 
-      <!-- Modal aceitar convite -->
-      <div class="modal fade" id="modalAceitar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">Compartilhe o link do seu Discord!</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="form-floating my-3">
-                  <input type="" class="form-control" id="floatingInput" placeholder="Discord">
-                  <label for="floatingInput">Discord</label>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-primary">Enviar</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
     </div>
 
@@ -274,22 +271,7 @@
 
 
       <!-- Cards perfil -->
-      <div class="card w-100 text-black border bg-cinza p-3 my-2">
-        <div class="row no-gutters">
-          <div class="col-md-3 col-12 text-center">
-            <a href="perfilTerceiro.php" target="_blank">
-              <img src="https://newprofilepic.photo-cdn.net//assets/images/article/profile.jpg?90af0c8" class="card-img-top cards-perfil-foto">
-            </a>
-          </div>
-          <div class="col-md-9">
-            <div class="card-body">
-              <h5 class="card-title fw-bold">Luiza &nbsp;&nbsp;<span class="badge bg-azul">Idade: 25</span></h5>
-              <p class="card-text">Jogadora de LOL e Smite, disposta a fazer novos amigos para jogar aos fins de
-                semana.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <?$listarUsuarios->readAll($user);?>
 
     </div>
 

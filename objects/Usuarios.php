@@ -85,35 +85,34 @@ class Usuarios
                 ID = :id";
 
         // Preparar query
-        $stmt = $this ->conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
 
         // Filtrar valores
-        $this->name = filter_var($this->name,FILTER_SANITIZE_SPECIAL_CHARS);
-        $this->district = filter_var($this->district,FILTER_SANITIZE_SPECIAL_CHARS);
-        $this->sexuality = filter_var($this->sexuality,FILTER_SANITIZE_SPECIAL_CHARS);
-        $this->orientation = filter_var($this->orientation,FILTER_SANITIZE_SPECIAL_CHARS);
-        $this->discord = filter_var($this->discord,FILTER_SANITIZE_URL);
-        $this->instagram = filter_var($this->instagram,FILTER_SANITIZE_URL);
-        $this->description = filter_var($this->description,FILTER_SANITIZE_SPECIAL_CHARS);
-        $this->id = filter_var($this->id,FILTER_SANITIZE_NUMBER_INT);
+        $this->name = filter_var($this->name, FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->district = filter_var($this->district, FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->sexuality = filter_var($this->sexuality, FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->orientation = filter_var($this->orientation, FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->discord = filter_var($this->discord, FILTER_SANITIZE_URL);
+        $this->instagram = filter_var($this->instagram, FILTER_SANITIZE_URL);
+        $this->description = filter_var($this->description, FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->id = filter_var($this->id, FILTER_SANITIZE_NUMBER_INT);
 
         // Associar valores
-        $stmt->bindValue(":name",$this->name);
-        $stmt->bindValue(":district",$this->district);
-        $stmt->bindValue(":sexuality",$this->sexuality);
-        $stmt->bindValue(":orientation",$this->orientation);
-        $stmt->bindValue(":discord",$this->discord);
-        $stmt->bindValue(":instagram",$this->instagram);
-        $stmt->bindValue(":description",$this->description);
-        $stmt->bindValue(":id",$this->id);
+        $stmt->bindValue(":name", $this->name);
+        $stmt->bindValue(":district", $this->district);
+        $stmt->bindValue(":sexuality", $this->sexuality);
+        $stmt->bindValue(":orientation", $this->orientation);
+        $stmt->bindValue(":discord", $this->discord);
+        $stmt->bindValue(":instagram", $this->instagram);
+        $stmt->bindValue(":description", $this->description);
+        $stmt->bindValue(":id", $this->id);
 
         // Executar query
         if ($stmt->execute()) {
             return true;
-        }else{
+        } else {
             return false;
         }
-        
     }
 
 
@@ -227,8 +226,46 @@ class Usuarios
     }
 
 
-    // Apagar perfil
-    function delete()
+    // Ler todos para mostrar nos cards de perfil
+    function readAll($user)
     {
+        // Query SQL para ler todos os registos
+        $query = "SELECT * FROM " . $this->table_name;
+
+        // Preparar query
+        $stmt = $this->conn->prepare($query);
+
+        //Executar query
+        $stmt->execute();
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            if ($row['ADM'] == true || $row['ID'] == $user->id) {
+                continue;
+            } else {
+
+                $currentDate = new DateTime();
+                $data = $row['DATA_NASCIMENTO'];
+                $age = $currentDate->diff(new DateTime($data))->y;
+
+                $foto = ($row['FOTO_PERFIL'] !== null) ? WEB_SERVER . WEB_ROOT . UPLOAD_FOLDER . UPLOAD_FOTOS . $row['FOTO_PERFIL'] : WEB_SERVER . WEB_ROOT . 'Projeto/static/images/profile_avatar.jpg';
+
+
+                echo '<div class="card w-100 text-black border bg-cinza p-3 my-2">';
+                echo '<div class="row no-gutters">';
+                echo '<div class="col-md-3 col-12 text-center">';
+                echo '<a href="index.php?m=perfil&a=perfilTerceiro&id=' . $row['ID'] . '"target="_blank">';
+                echo '<img src="' . $foto . '" class="card-img-top cards-perfil-foto"></a>';
+                echo '</div>';
+                echo '<div class="col-md-9">';
+                echo '<div class="card-body">';
+                echo '<h5 class="card-title fw-bold">' . $row['NOME'] . '&nbsp;&nbsp;<span class="badge bg-azul">Idade: ' . $age . '</span></h5>';
+                echo '<p class="card-text">' . $row['DESCRICAO'] . '</p>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+            }
+        }
     }
 }

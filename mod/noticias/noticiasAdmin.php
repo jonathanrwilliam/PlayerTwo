@@ -1,3 +1,19 @@
+<?php
+
+require_once 'core.php';
+require_once './objects/Usuarios.php';
+
+$pdo = connectDB($db);
+$user = new Usuarios($pdo);
+$user->id = $_SESSION['uid'];
+
+if (!is_admin()) {
+  header("Location: index.php?module=home&action=home");
+  exit();
+}
+
+
+?>
 
 <main class=" container col-12 col-md-8 bg-azul border-start border-end">
   <div class="input-group p-3">
