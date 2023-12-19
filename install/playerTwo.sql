@@ -87,7 +87,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `esan-dsg08`.`POSTS` (
   `ID` INT NOT NULL AUTO_INCREMENT,
-  `CONTEUDO` BLOB NOT NULL,
+  `CONTEUDO` VARCHAR(255) NOT NULL,
   `ID_USUARIO` INT NOT NULL,
   PRIMARY KEY (`ID`),
   INDEX `fk_posts_usuarios1_idx` (`ID_USUARIO` ASC),

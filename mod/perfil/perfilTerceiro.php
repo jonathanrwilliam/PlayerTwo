@@ -3,9 +3,11 @@
 require_once './config.php';
 require_once './core.php';
 require_once './objects/Usuarios.php';
+require_once './objects/Convites.php';
 
 $pdo = connectDB($db);
 
+//colocar filtros
 if (isset($_GET['id'])) {
     $idTerceiro = $_GET['id'];
 }
@@ -13,12 +15,28 @@ if (isset($_GET['id'])) {
 $user = new Usuarios($pdo);
 $user->id = $idTerceiro;
 
+$convite = new Convites($pdo);
+
+$conviteExiste = $convite->verificarConvite($_SESSION['uid'],$idTerceiro);
+
+//Variável criada para desabilitar o botão se return true
+$botaoDesabilitado = $conviteExiste ? "disabled" : "";
+
+//Criar metodo para validar se ja somos amigos,  $_SESSION['uid'] e idTerceiro
 
 $user->readOne();
 
+// Enviar convite
+$enviarConvite = filter_input(INPUT_POST, 'invite');
+if ($enviarConvite) {
+    require_once './mod/convites/enviarConvite.php';
+}
+
 
 ?>
-
+<div>
+  <?= $html ?>
+</div>
 <main class="container bg-azul p-3">
     <div class="d-flex conteudo-perfil">
         <!--<div class="mx-auto mb-3 mb-md-0 fotoPerfil col-4"></div>-->
@@ -87,11 +105,16 @@ $user->readOne();
             </div>
 
             <!-- Linha 6: Botões -->
-            <div class="row mx-3">
-                <div class="col text-end">
-                    <button type="button" class="btn btn-success me-2">Convidar para jogar</button>
+            <!-- ao clicar nesse submit eu chamo $enviarConvite por causa do name=invite, executo o que está dentro da condicao e redireciono para action deste form -->
+            <form method="post" action="?m=perfil&a=perfilTerceiro&id=<?php echo $idTerceiro;  ?>">
+                <div class="row mx-3">
+                    <input type="hidden" name="id_recetor" value=" <?php echo $idTerceiro;  ?> ">
+                    <div class="col text-end">
+                        <button type="submit" name="invite" class="btn btn-success me-2" 
+                        value="invite" <?php echo $botaoDesabilitado; ?> >Convidar para jogar</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
 
 

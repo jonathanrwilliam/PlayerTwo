@@ -14,8 +14,6 @@ $listaGenero = new Genero($pdo);
 require_once './config.php';
 require_once './core.php';
 
-$html = '';
-
 // Carregar dados do utilizador
 $user->readOne();
 
@@ -37,12 +35,16 @@ if ($update) {
 $updateFoto = filter_input(INPUT_POST, 'updateFoto');
 if ($updateFoto) {
     require_once './mod/perfil/updateFoto.php';
+    $user->readOne();
 }
 ?>
-
+<div>
+  <?= $html ?>
+</div>
 <main class="container bg-azul p-3">
     <div class="d-flex conteudo-perfil">
         <?php
+        
         if ($user->profilepicture == null) {
             $url = WEB_SERVER . WEB_ROOT . 'Projeto/static/images/profile_avatar.jpg';
         } else {
@@ -51,7 +53,7 @@ if ($updateFoto) {
         ?>
         <!-- Form Update foto de perfil -->
         <div class="col">
-            <form method="post" enctype="multipart/form-data" action="?m=perfil&a=updateFoto">
+            <form method="post" enctype="multipart/form-data" action="?m=perfil&a=verPerfil">
                 <div class="mx-auto mb-3 mb-md-0 fotoPerfil col-4 position-relative" style="background-image: url('<?php echo $url; ?>');">
                     <button type="submit" name="updateFoto" class="btn btn-success position-absolute bottom-0 start-50 translate-middle-x mb-2" value="Upload">Alterar foto</button>
                 </div>
@@ -135,9 +137,6 @@ if ($updateFoto) {
                 </div>
             </form>
         </div>
-    </div>
-    <div>
-        <?= $html ?>
     </div>
 
 </main>

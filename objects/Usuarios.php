@@ -254,7 +254,7 @@ class Usuarios
                 echo '<div class="card w-100 text-black border bg-cinza p-3 my-2">';
                 echo '<div class="row no-gutters">';
                 echo '<div class="col-md-3 col-12 text-center">';
-                echo '<a href="index.php?m=perfil&a=perfilTerceiro&id=' . $row['ID'] . '"target="_blank">';
+                echo '<a href="index.php?m=perfil&a=perfilTerceiro&id=' . $row['ID'] . '" target="_blank">';
                 echo '<img src="' . $foto . '" class="card-img-top cards-perfil-foto"></a>';
                 echo '</div>';
                 echo '<div class="col-md-9">';

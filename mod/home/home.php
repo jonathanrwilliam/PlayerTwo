@@ -28,35 +28,22 @@ require_once './core.php';
           <p class="text-center bg-dark p-1 rounded-p mb-0"> CONVITES</p>
         </div>
         <div class="d-flex my-1">
-          <button class="btn btn-dark flex-fill p-0 me-1" type="button">
+          <button class="btn btn-dark flex-fill p-0 me-1" type="button" onclick="mostrarConteudo('enviados')">
             <p class="mb-0">Enviados</p>
           </button>
-          <button class="btn btn-dark flex-fill p-0 ms-1" type="button">
+          <button class="btn btn-dark flex-fill p-0 ms-1" type="button" onclick="mostrarConteudo('recebidos')">
             <p class="mb-0">Recebidos</p>
           </button>
         </div>
       </div>
-      <?php $convitesRecebidos->readRecebidos();?>
-      <!--Cards convites
-      <div class="card bg-dark border-light my-2">
-        <div class="card-body d-flex">
-          <div class="col-4 text-center me-2">
-            <a href="perfilTerceiro.php" target="_blank">
-              <img src="https://monteluke.com.au/wp-content/gallery/linkedin-profile-pictures/9.JPG" class="card-img-top cards-convites-foto">
-            </a>
-          </div>
-          <div class="col-8">
-            <div class="row text-center mb-1">
-              <h5 class="card-title fw-bold d-flex justify-content-center align-items-center"><a href="perfilTerceiro.html" target="_blank" class="text-decoration-none text-light">Ana</a>
-                &nbsp;&nbsp;<span class="badge bg-azul">Idade: 21</span></h5>
-            </div>
-            <div class="d-flex justify-content-center text-center">
-              <button type="button" class="btn btn-success flex-fill me-1 btn-sm" id="aceitar">Aceitar</button>
-              <button type="button" class="btn btn-danger flex-fill btn-sm" id="recusar">Recusar</button>
-            </div>
-          </div>
-        </div>
-      </div>-->
+
+      <div id="conteudoEnviados" style="display:none;">
+        <?php $convitesRecebidos->readEnviados(); ?>
+      </div>
+
+      <div id="conteudoRecebidos">
+        <?php $convitesRecebidos->readRecebidos(); ?>
+      </div>
 
 
     </div>
@@ -271,7 +258,7 @@ require_once './core.php';
 
 
       <!-- Cards perfil -->
-      <?$listarUsuarios->readAll($user);?>
+      <? $listarUsuarios->readAll($user); ?>
 
     </div>
 

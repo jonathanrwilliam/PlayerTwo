@@ -29,7 +29,6 @@ class Genero
         //Executar query
         $stmt->execute();
 
-        $hasEnteredElseIf = false;
 
         if ($user->sexuality === null) {
             echo '<option value="" selected></option>';

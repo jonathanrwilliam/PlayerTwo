@@ -15,7 +15,7 @@ $module = filter_input(INPUT_GET, 'm', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 // Carregar ação
 $action = filter_input(INPUT_GET, 'a', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-
+$html = '';
 
 // Direcionar de acordo com admin
 if (is_admin()) {
@@ -48,13 +48,21 @@ if (is_admin()) {
 
 <body>
     <?php
-    include_once 'mod/navbar.php';
-
-
-    require_once "mod/$module/$action.php";
-
-
+    include_once 'mod/navbar.php'; 
     ?>
+
+    
+    <!--Decidir se coloca antes ou depois module-->
+    
+
+    <?php
+    require_once "mod/$module/$action.php"; 
+    ?>
+
+
+    
+    
+    
 
     <div>
         <?= debug() ? $_DEBUG : '' ?>

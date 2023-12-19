@@ -57,3 +57,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Evento de redimensionamento da tela
   window.addEventListener("resize", toggleSections);
 });
+
+// Chamada inicial para exibir "Convites Recebidos" por padrão
+mostrarConteudo('recebidos');
+
+function mostrarConteudo(tipo) {
+  if (tipo === 'enviados') {
+    document.getElementById('conteudoEnviados').style.display = 'block';
+    document.getElementById('conteudoRecebidos').style.display = 'none';
+  } else if (tipo === 'recebidos') {
+    document.getElementById('conteudoEnviados').style.display = 'none';
+    document.getElementById('conteudoRecebidos').style.display = 'block';
+  }
+}
