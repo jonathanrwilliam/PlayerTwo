@@ -18,9 +18,11 @@ $user->id = $idTerceiro;
 $convite = new Convites($pdo);
 
 $conviteExiste = $convite->verificarConvite($_SESSION['uid'],$idTerceiro);
-
 //Variável criada para desabilitar o botão se return true
 $botaoDesabilitado = $conviteExiste ? "disabled" : "";
+
+$conviteAceite = $convite->verificarAceite($_SESSION['uid'],$idTerceiro);
+$ocultaLinks = $conviteAceite ? "" : 'style="visibility: hidden;"';
 
 //Criar metodo para validar se ja somos amigos,  $_SESSION['uid'] e idTerceiro
 
@@ -74,7 +76,7 @@ if ($enviarConvite) {
             </div>
 
             <!-- Linha 3: Links -->
-            <div class="row mb-3 mx-3">
+            <div class="row mb-3 mx-3" <?php echo $ocultaLinks; ?>>
                 <div class="col me-3">
                     <label for="genero" class="form-label">Discord</label>
                     <input type="text" class="form-control" id="discord" value="<?php echo $user->discord ?>" readonly>

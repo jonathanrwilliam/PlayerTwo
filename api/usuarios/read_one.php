@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "sexuality" => $user->sexuality,
             "orientation" => $user->orientation,
             "district" => $user->district,
-            "profilepicture" => $user->profilepicture,
+            "profilepicture" => WEB_SERVER . WEB_ROOT . UPLOAD_FOLDER . UPLOAD_FOTOS . $user->profilepicture,
             "discord" => $user->discord,
             "instagram" => $user->instagram
         );

@@ -141,7 +141,7 @@ class Usuarios
             $errors = true;
         }
         if (strlen($password) < 8) {
-            $html .= '<div class="alert alert-danger">A senha precisa ter entre 8 e 15 caracteres.</div>';
+            $html .= '<div class="alert alert-danger">A senha precisa ter mais que 8 caracteres.</div>';
             $errors = true;
         }
 
@@ -157,7 +157,7 @@ class Usuarios
 
         // Fazer o registo do usuário na BD
         if (!$errors) {
-            $sql = "INSERT INTO USUARIOS(NOME, DATA_NASCIMENTO,EMAIL,SENHA,LINK_DISCORD) VALUES(:USERNAME,:DATA_NASCIMENTO,:EMAIL,:PASSWORD,:LINK)";
+            $sql = "INSERT INTO `USUARIOS` (NOME, DATA_NASCIMENTO,EMAIL,SENHA,LINK_DISCORD) VALUES(:USERNAME,:DATA_NASCIMENTO,:EMAIL,:PASSWORD,:LINK)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(":USERNAME", $name, PDO::PARAM_STR);
             $stmt->bindValue(":DATA_NASCIMENTO", $dateofbirth, PDO::PARAM_STR);

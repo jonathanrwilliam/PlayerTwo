@@ -20,11 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obter dados de login
     $email = ($_POST['email']);
     $password = ($_POST['password']);
-    //$password_hash_db = password_hash($password, PASSWORD_DEFAULT);
-
-    // Configurar as propriedades do objeto Usuario/ Preciso disso?
-    //$user->email = $email;
-    //$user->password = $password_hash_db;
 
 
     $sql = "SELECT * FROM `USUARIOS` WHERE `EMAIL`= :EMAIL LIMIT 1";

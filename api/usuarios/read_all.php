@@ -11,13 +11,15 @@ $user = new Usuarios($pdo);
 // Definição do cabeçalho
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
 
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $id = ($_POST['id']);
 
     $query = "SELECT * FROM USUARIOS";
     $stmt = $pdo->prepare($query);
@@ -32,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-            if ($row['ADM'] == true) {
+            if ($row['ADM'] == true || $row['ID'] == $id) {
                 continue;
             } else {
 

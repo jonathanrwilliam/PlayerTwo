@@ -8,16 +8,36 @@ $listarUsuarios = new Usuarios($pdo);
 
 $user->id = $_SESSION['uid'];
 
+//O nome do objeto é convites recebidos mas serve para ler os recebidos, enviados e conversas
 $convitesRecebidos = new Convites($pdo);
 $convitesRecebidos->id = $_SESSION['uid'];
 
 require_once './config.php';
 require_once './core.php';
 
+// Aceitar convite
+$aceitarConvite = filter_input(INPUT_POST, 'aceitar');
+if ($aceitarConvite) {
+    require_once './mod/convites/aceitarConvite.php';
+}
+
+// Recusar convite
+$aceitarConvite = filter_input(INPUT_POST, 'recusar');
+if ($aceitarConvite) {
+    require_once './mod/convites/recusarConvite.php';
+}
+
+// Cancelar convite
+$cancelarConvite = filter_input(INPUT_POST, 'cancelar');
+if ($cancelarConvite) {
+    require_once './mod/convites/cancelarConvite.php';
+}
+
 
 ?>
-
-
+<div>
+  <?= $html ?>
+</div>
 <main class=" container-fluid	">
   <div class="row vh-100">
 
@@ -272,21 +292,6 @@ require_once './core.php';
         </form>
       </div>
       <!--Cards emails-->
-      <div class="card bg-dark border-light my-2">
-        <div class="card-body d-flex">
-          <div class="col-4 text-center me-2 d-flex align-items-center">
-            <a href="perfilTerceiro.php" target="_blank">
-              <img src="https://monteluke.com.au/wp-content/gallery/linkedin-profile-pictures/9.JPG" class="card-img-top cards-conversas-foto">
-            </a>
-          </div>
-          <div class="col-8">
-            <div class="text-center">
-              <h5 class="card-title fw-bold d-flex justify-content-center align-items-center mb-3">Ana</h5>
-              <p class="bg-azul border rounded-p" id="msg">https://discord.com/servers</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <?php $convitesRecebidos->readConversas(); ?>
     </div>
 </main>

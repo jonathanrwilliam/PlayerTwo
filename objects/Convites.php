@@ -78,7 +78,10 @@ class Convites
                                     &nbsp;&nbsp;<span class="badge bg-azul">Idade:' . $age . '</span></h5>
                             </div>
                             <div class="d-flex justify-content-center text-center">
-                                <button type="button" class="btn btn-danger flex-fill btn-sm" id="cancelar">Cancelar</button>
+                                <form action="?m=home&a=home" method="post">
+                                    <input type="hidden" name="id_recetor" value="' . $row['ID'] . '">
+                                    <button type="submit" name="cancelar" value="cancelar" class="btn btn-danger flex-fill btn-sm" id="cancelar">Cancelar</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -95,7 +98,7 @@ class Convites
     {
         // Query SQL para ler todos os registos
         $query = "SELECT * FROM " . $this->table_name . " 
-        WHERE ID_RECETOR = :ID";
+        WHERE ID_RECETOR = :ID AND ACEITE = 0";
 
         // Preparar query
         $stmt = $this->conn->prepare($query);
@@ -150,8 +153,14 @@ class Convites
                                     &nbsp;&nbsp;<span class="badge bg-azul">Idade:' . $age . '</span></h5>
                             </div>
                             <div class="d-flex justify-content-center text-center">
-                                <button type="button" class="btn btn-success flex-fill me-1 btn-sm" id="aceitar">Aceitar</button>
-                                <button type="button" class="btn btn-danger flex-fill btn-sm" id="recusar">Recusar</button>
+                                <form action="?m=home&a=home" method="post">
+                                    <input type="hidden" name="id_remetente" value="' . $row['ID'] . '">
+                                    <button type="submit" name="aceitar" value="aceitar" class="btn btn-success flex-fill me-1 btn-sm" id="aceitar">Aceitar</button>
+                                </form>
+                                <form action="?m=home&a=home" method="post">
+                                    <input type="hidden" name="id_remetente" value="' . $row['ID'] . '">
+                                    <button type="submit" name="recusar" value="recusar" class="btn btn-danger flex-fill btn-sm" id="recusar">Recusar</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -183,4 +192,103 @@ class Convites
 
         return $result['count'] > 0;
     }
+
+    // Método para verificar se existe um convite aceite entre os usuarios
+    //Utilizado em perfilTerceiro
+    function verificarAceite($id_remetente, $id_recetor)
+    {
+
+        $query = "SELECT COUNT(*) as count FROM CONVITES 
+                  WHERE (ID_REMETENTE = :id_remetente OR ID_REMETENTE = :id_recetor) 
+                  AND (ID_RECETOR = :id_remetente OR ID_RECETOR = :id_recetor)
+                  AND ACEITE = 1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':id_remetente', $id_remetente, PDO::PARAM_INT);
+        $stmt->bindParam(':id_recetor', $id_recetor, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result['count'] > 0;
+    }
+
+    // Método para verificar todos os convites com ACEITE = true e mostrar dados em Conversas
+    //Utilizado em home na parte conversas
+    function readConversas()
+    {
+
+        $query = "SELECT * FROM CONVITES 
+                  WHERE (ID_REMETENTE = :ID 
+                  OR ID_RECETOR = :ID)
+                  AND ACEITE = 1";
+
+        $stmt = $this->conn->prepare($query);
+
+        // Filtrar e associar valor do ID
+        $this->id = filter_var($this->id, FILTER_SANITIZE_NUMBER_INT);
+        $stmt->bindValue(':ID', $this->id);
+
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+
+        if($num >0){
+
+            while ($row = $stmt->fetch()){
+                $idRemetente = $row['ID_REMETENTE'];
+                $idRecetor = $row['ID_RECETOR'];
+
+                if ($idRemetente == $this->id) {
+                    $idUsuario = $idRecetor;
+                } else {
+                    // Se o ID_RECETOR for igual a $this->id
+                    $idUsuario = $idRemetente;
+                }
+
+                // Obter dados do terceiro
+                $queryUsuario = "SELECT * FROM USUARIOS WHERE ID = :ID";
+                $stmtUsuario = $this->conn->prepare($queryUsuario);
+                $stmtUsuario->bindValue(':ID', $idUsuario, PDO::PARAM_INT);
+                $stmtUsuario->execute();
+
+                $rowUsuario = $stmtUsuario->fetch(PDO::FETCH_ASSOC);
+
+                $fotoUsuario = ($rowUsuario['FOTO_PERFIL'] !== null) ? WEB_SERVER . WEB_ROOT . UPLOAD_FOLDER . UPLOAD_FOTOS . $rowUsuario['FOTO_PERFIL'] : WEB_SERVER . WEB_ROOT . 'Projeto/static/images/profile_avatar.jpg';
+
+                $nomeUsuario = $rowUsuario['NOME'];
+                $discordUsuario = $rowUsuario['LINK_DISCORD'];
+                $instagramUsuario = $rowUsuario['LINK_INSTAGRAM'];
+
+
+                echo'<div class="card bg-dark border-light my-2">
+                        <div class="card-body d-flex">
+                            <div class="col-4 text-center me-2 d-flex align-items-center">
+                                <a href="index.php?m=perfil&a=perfilTerceiro&id=' . $rowUsuario['ID'] . '"target="_blank">
+                                <img src="' . $fotoUsuario .'" class="card-img-top cards-conversas-foto">
+                                </a>
+                            </div>
+                            <div class="col-8">
+                                <div class="text-center">
+                                    <h5 class="card-title fw-bold d-flex justify-content-center align-items-center mb-3">' . $nomeUsuario . '</h5>
+                                    <p class="bg-azul border rounded-p" id="msg">' . $discordUsuario . '</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="bg-azul border rounded-p" id="msg">' . $instagramUsuario . '</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
+
+            }
+
+        }else{
+            echo '<p>Não há conversas.</p>';
+        }
+
+    }
+
+
 }
