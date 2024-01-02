@@ -3,6 +3,7 @@ require_once './objects/Usuarios.php';
 require_once './objects/Orientacao.php';
 require_once './objects/Distritos.php';
 require_once './objects/Genero.php';
+require_once './objects/Jogos.php';
 
 $pdo = connectDB($db);
 $user = new Usuarios($pdo);
@@ -10,6 +11,7 @@ $user->id = $_SESSION['uid'];
 $listaOrientacao = new Orientacao($pdo);
 $listaDistritos = new Distritos($pdo);
 $listaGenero = new Genero($pdo);
+$jogos = new Jogos($pdo);
 
 require_once './config.php';
 require_once './core.php';
@@ -37,6 +39,25 @@ if ($updateFoto) {
     require_once './mod/perfil/updateFoto.php';
     $user->readOne();
 }
+
+// Add jogo
+$addJogo = filter_input(INPUT_POST, 'addJogo');
+if ($addJogo) {
+    $jogo = $_POST['jogos'];
+    $jogos->addJogo($jogo);
+    $user->readOne();
+}
+
+// Delete jogo
+$deleteJogo = filter_input(INPUT_POST, 'delJogo');
+if ($deleteJogo) {
+    $jogo = $_POST['jogos'];
+    $jogos->delJogo($jogo);
+    $user->readOne();
+}
+
+
+
 ?>
 <div>
   <?= $html ?>
@@ -120,10 +141,18 @@ if ($updateFoto) {
                     <div class="row mb-5 mx-3">
                         <div class="col">
                             <label for="jogos" class="form-label">Jogos</label>
-                            <br>
-                            <span class="badge bg-dark">Smite</span>
-                            <span class="badge bg-dark">League of Legends</span>
-                            <span class="badge bg-dark">Minecraft</span>
+                            <div class="d-flex">
+
+                                <select name="jogos" id="jogo" class="form-select">
+                                    <?php $jogos->list(); ?>
+                                </select>
+
+                                <button type="submit" class="btn btn-success mx-2 btn-sm" name="addJogo" value="addJogo">Adicionar</button>
+                                <button type="submit" class="btn btn-danger btn-sm" name="delJogo" value="delJogo">Remover</button>
+
+                                <br>
+                            </div>
+                            <?php echo $jogos->read($user); ?>
                         </div>
                     </div>
 

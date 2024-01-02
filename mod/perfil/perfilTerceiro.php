@@ -4,6 +4,7 @@ require_once './config.php';
 require_once './core.php';
 require_once './objects/Usuarios.php';
 require_once './objects/Convites.php';
+require_once './objects/Jogos.php';
 
 $pdo = connectDB($db);
 
@@ -16,6 +17,8 @@ $user = new Usuarios($pdo);
 $user->id = $idTerceiro;
 
 $convite = new Convites($pdo);
+
+$jogos = new Jogos($pdo);
 
 $conviteExiste = $convite->verificarConvite($_SESSION['uid'],$idTerceiro);
 //Variável criada para desabilitar o botão se return true
@@ -100,9 +103,7 @@ if ($enviarConvite) {
                 <div class="col">
                     <label for="jogos" class="form-label">Jogos</label>
                     <br>
-                    <span class="badge bg-dark">Smite</span>
-                    <span class="badge bg-dark">League of Legends</span>
-                    <span class="badge bg-dark">Minecraft</span>
+                    <?php echo $jogos->read($user); ?>
                 </div>
             </div>
 
