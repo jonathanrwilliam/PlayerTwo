@@ -130,8 +130,29 @@ class Usuarios
         $password_hash_db = password_hash($password, PASSWORD_DEFAULT);
         $discord = filter_input(INPUT_POST, 'discord', FILTER_SANITIZE_URL);
 
-        // Validar dados nome, email e passe
+        // Validar dados 
         $errors = false;
+
+        if (empty($dateofbirth)) {
+            $html .= '<div class="alert alert-danger">A data de nascimento é obrigatória.</div>';
+            $errors = true;
+        } else {
+            // Calcular a idade com base na data de nascimento
+            $date = new DateTime($dateofbirth);
+            $today = new DateTime();
+            $age = $today->diff($date)->y;
+        
+            // Verificar se o usuário tem pelo menos 18 anos
+            if ($age < 18) {
+                $html .= '<div class="alert alert-danger">Precisa ter pelo menos 18 anos.</div>';
+                $errors = true;
+            }
+        }
+
+        if ($discord == '') {
+            $html .= '<div class="alert alert-danger">Precisa inserir seu discord.</div>';
+            $errors = true;
+        }
         if ($name == '') {
             $html .= '<div class="alert alert-danger">Tem que inserir um nome.</div>';
             $errors = true;
@@ -226,11 +247,22 @@ class Usuarios
     }
 
 
-    // Ler todos para mostrar nos cards de perfil
-    function readAll($user)
+    // Ler todos para mostrar nos cards de perfil, aplica filtros de idade
+    function readAll($user, $idadeMin, $idadeMax)
     {
+
+        $dataAtual = new DateTime();
+
+        $dataMin = $dataAtual->sub(new DateInterval('P' . $idadeMin . 'Y'))->format('Y-m-d');
+
+        $dataAtual = new DateTime();
+
+        // Calcular dataMax subtraindo $idadeMax anos da data atual
+        $dataMax = $dataAtual->sub(new DateInterval('P' . $idadeMax . 'Y'))->format('Y-m-d');
+
+
         // Query SQL para ler todos os registos
-        $query = "SELECT * FROM " . $this->table_name;
+        $query = "SELECT * FROM " . $this->table_name . " WHERE DATA_NASCIMENTO <= '" . $dataMin . "' AND DATA_NASCIMENTO >= '" . $dataMax . "'";
 
         // Preparar query
         $stmt = $this->conn->prepare($query);

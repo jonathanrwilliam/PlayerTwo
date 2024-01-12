@@ -33,6 +33,14 @@ if ($cancelarConvite) {
     require_once './mod/convites/cancelarConvite.php';
 }
 
+$idadeMin = filter_input(INPUT_GET,'idadeMin',FILTER_SANITIZE_NUMBER_INT);
+$idadeMax = filter_input(INPUT_GET,'idadeMax',FILTER_SANITIZE_NUMBER_INT);
+
+
+//Verificar se valores de $idadeMin e idadeMax estão preenchidos
+$idadeMin = strlen($idadeMin) ? $idadeMin : 18;
+$idadeMax = strlen($idadeMax) ? $idadeMax : 99;
+
 
 ?>
 <div>
@@ -72,174 +80,179 @@ if ($cancelarConvite) {
     <div class="col-12 col-lg-6 border-end border-start bg-dark border-3 p-2" id="Principal">
       <!--Filtros-->
       <container class="container-fluid px-0">
-        <div class="d-flex border-bottom pb-1">
-          <input class="w-100 text-center align-items-center campoIdade me-1" type="number" min="18" max="99" placeholder="Idade Mínima">
-          <input class="w-100 text-center  campoIdade" type="number" min="18" max="99" placeholder="Idade Máxima">
-          <!--Botão de busca-->
-          <button class="btn btn-dark rounded-circle mx-1" id="buscaButton">
-            <i class="bi-search fs-4"></i>
-          </button>
-          <!--Botão de filtro-->
-          <button class="btn btn-dark rounded-circle mx-1" id="filtroButton">
-            <i class="bi-funnel fs-4"></i>
-          </button>
-          <!--Idade-->
+        <form method="get">
 
-          <!--Género-->
-          <div class="dropdown d-flex align-items-center align-items-stretch flex-fill">
-            <button class="btn btn-secondary btn-sm mx-1 botoes dropdown-toggle flex-fill" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: none;">
-              Género
+          <div class="d-flex border-bottom pb-1">
+            <!-- value="<?= $idadeMin?>" -->
+            <input class="w-100 text-center align-items-center campoIdade me-1" type="number" name="idadeMin" min="18" max="99" placeholder="Idade Mínima">
+            <input class="w-100 text-center  campoIdade" type="number" name="idadeMax" min="18" max="99" placeholder="Idade Máxima">
+            <!--Botão de busca-->
+            <button class="btn btn-dark rounded-circle mx-1" type="submit" id="buscaButton">
+              <i class="bi-search fs-4"></i>
             </button>
-            <ul class="dropdown-menu">
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="homemCheckbox">
-                  Homem
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="mulherCheckbox">
-                  Mulher
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="homemTransCheckbox">
-                  Homem trans
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="mulherTransCheckbox">
-                  Mulher trans
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="naoBinarioCheckbox">
-                  Não binário
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="outroGeneroCheckbox">
-                  Outro
-                  </label>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <!--Orientação-->
-          <div class="dropdown d-flex align-items-center align-items-stretch flex-fill">
-            <button class="btn btn-secondary btn-sm mx-1 botoes dropdown-toggle flex-fill" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: none;">
-              Orientação
+            <!--Botão de filtro-->
+            <button class="btn btn-dark rounded-circle mx-1" id="filtroButton">
+              <i class="bi-funnel fs-4"></i>
             </button>
-            <ul class="dropdown-menu">
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="heteroCheckbox">
-                  Hétero
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="gayCheckbox">
-                  Gay
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="biCheckbox">
-                  Bi
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="assexualCheckbox">
-                  Assexual
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="pansexualCheckbox">
-                  Pansexual
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="outroOrientacaoCheckbox">
-                  Outro
-                  </label>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <!--Distrito-->
-          <div class="dropdown d-flex align-items-center align-items-stretch flex-fill">
-            <button class="btn btn-secondary btn-sm mx-1 botoes dropdown-toggle flex-fill" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: none;">
-              Distrito
+            <!--Idade-->
+  
+            <!--Género-->
+            <div class="dropdown d-flex align-items-center align-items-stretch flex-fill">
+              <button class="btn btn-secondary btn-sm mx-1 botoes dropdown-toggle flex-fill" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: none;">
+                Género
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="homemCheckbox">
+                    Homem
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="mulherCheckbox">
+                    Mulher
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="homemTransCheckbox">
+                    Homem trans
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="mulherTransCheckbox">
+                    Mulher trans
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="naoBinarioCheckbox">
+                    Não binário
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="outroGeneroCheckbox">
+                    Outro
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <!--Orientação-->
+            <div class="dropdown d-flex align-items-center align-items-stretch flex-fill">
+              <button class="btn btn-secondary btn-sm mx-1 botoes dropdown-toggle flex-fill" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: none;">
+                Orientação
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="heteroCheckbox">
+                    Hétero
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="gayCheckbox">
+                    Gay
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="biCheckbox">
+                    Bi
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="assexualCheckbox">
+                    Assexual
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="pansexualCheckbox">
+                    Pansexual
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="outroOrientacaoCheckbox">
+                    Outro
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <!--Distrito-->
+            <div class="dropdown d-flex align-items-center align-items-stretch flex-fill">
+              <button class="btn btn-secondary btn-sm mx-1 botoes dropdown-toggle flex-fill" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: none;">
+                Distrito
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="heteroCheckbox">
+                    Aveiro
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="gayCheckbox">
+                    Beja
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="biCheckbox">
+                    Braga
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="assexualCheckbox">
+                    Bragança
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="pansexualCheckbox">
+                    Castelo Branco
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check ms-1">
+                    <input class="form-check-input" type="checkbox" id="outroOrientacaoCheckbox">
+                    Coimbra
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <!--Jogos-->
+            <button class="btn btn-secondary btn-sm flex-fill mx-1 botoes" type="button" id="btnJogos" style="display: none;">
+              Jogos
             </button>
-            <ul class="dropdown-menu">
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="heteroCheckbox">
-                  Aveiro
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="gayCheckbox">
-                  Beja
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="biCheckbox">
-                  Braga
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="assexualCheckbox">
-                  Bragança
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="pansexualCheckbox">
-                  Castelo Branco
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check ms-1">
-                  <input class="form-check-input" type="checkbox" id="outroOrientacaoCheckbox">
-                  Coimbra
-                  </label>
-                </div>
-              </li>
-            </ul>
           </div>
-          <!--Jogos-->
-          <button class="btn btn-secondary btn-sm flex-fill mx-1 botoes" type="button" id="btnJogos" style="display: none;">
-            Jogos
-          </button>
-        </div>
+
+        </form>
       </container>
 
       <!-- Cards filtros jogos-->
@@ -278,7 +291,7 @@ if ($cancelarConvite) {
 
 
       <!-- Cards perfil -->
-      <? $listarUsuarios->readAll($user); ?>
+      <? $listarUsuarios->readAll($user,$idadeMin,$idadeMax); ?>
 
     </div>
 
